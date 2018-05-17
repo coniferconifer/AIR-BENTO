@@ -1,0 +1,96 @@
+## AIR BENTO CO2 and dust monitor by ESP32
+## Improve Decision-Making Performance by AIR BENTO
+   
+### watch CO2 and dust levels at home/car/workplace , vent breathless air
+- Winsen MH-Z14A CO2 sensor
+- SHARP GP2Y1014AU0F dust/smoke sensor
+- Bosch BMP180 pressure sensor GY-68
+- Sensirion SHT21 humidity sensor GY-21  
+- runs on ESP32 NodeMCU board
+- 128x64 mono color OLED display is supported
+- works as a MQTT client over WiFi or a BLE device
+are packed in BENTO lunch box.
+### what's new
+- SHT21 humidity sensor is supported in May/14/2018 by #define HUMIDITY
+- GY-21 board with SHT21 has 5V SDA/SCL pins , use FET 3.3V-5V level converter to connect to ESP32 I2C bus.
+- wirings are changed to use BMP180 as of April/30/2018
+- By using the latest Arduino core for ESP32 with BLE , the compiled flash memory reached to 104%, so that BLE is an option by default and reduced to 45% of flash memory.
+- #define DEEPSLEEP for ESP32 deep sleep is supported in May 13,2018
+
+![AIR BENTO](https://github.com/coniferconifer/AIR-BENTO/blob/master/AIR%20BENTO.jpg)
+## CO2 sensor Winsen MH-Z14A
+- 9600bps serial port
+## Dust sensor SHARP GP2Y1014AU0F or maybe GP2Y1010AU0F
+- analog voltage output 0-3.7V 
+- Vo output is connected to ESP32 ADC33 port
+- LED is driven by NPN transister 2N5551 from GPIO39
+- Vo output goes up to 3.7V, so Vo is clipped by shotkey diode 1N5819 to protect GPIO33.
+
+## GY-68 BMP180 pressure sensor (Apr/30/2018)
+- connected via I2C (GPIO21 as SDA , GPIO22 as SCL)
+- GY-68 BMP180 has 3.3V linear regulator on board and SDA,SCL are pulled up to 3.3V,
+  so, I supply 5V to VCC pin. (depending on your hardare) 
+
+
+
+## posts sensor values to MQTT server via WiFi
+- ThingsBoard is recommended to visualize data by its dashboard.
+  I'm running ThingsBoard on Raspberry pi.
+
+## broadcasts sensor values as bluetooth device name
+- Mobile phone users near AIR BENTO can read out sensor values without application.
+## 
+
+## License: Apache License v2
+
+## References
+
+### CO2 sensor:
+
+- [MH-Z14A  User's Manual V1.01](http://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z14a_co2-manual-v1_01.pdf)
+
+- [MH-Z14A User's ManualV2.4](http://www.winsen-sensor.com/d/files/PDF/Infrared%20Gas%20Sensor/NDIR%20CO2%20SENSOR/MH-Z14%20CO2%20V2.4.pdf)
+
+- [https://revspace.nl/MHZ19](https://revspace.nl/MHZ19)
+
+### SSD1306 OLED display library from 
+- [SSD1306 https://github.com/LilyGO/ESP32-OLED0.96-ssd1306](https://github.com/LilyGO/ESP32-OLED0.96-ssd1306)
+
+- [http://esp-idf.readthedocs.io/en/latest/api-reference/peripherals/spi_master.html](http://esp-idf.readthedocs.io/en/latest/api-reference/peripherals/spi_master.html)
+
+### GY-68 BMP180 pressure sensor
+- [GY-68 BMP180 http://artofcircuits.com/product/bmp180-digital-barometric-sensor-module-model-gy-68](http://artofcircuits.com/product/bmp180-digital-barometric-sensor-module-model-gy-68)
+
+### BMP180 library
+- [https://github.com/adafruit/Adafruit-BMP085-Library](https://github.com/adafruit/Adafruit-BMP085-Library)
+
+### SHT21 library for GY-21
+- [https://github.com/e-radionicacom/SHT21-Arduino-Library](https://github.com/e-radionicacom/SHT21-Arduino-Library)
+
+
+### PubSubClient
+- [https://github.com/knolleary/pubsubclient](https://github.com/knolleary/pubsubclient)
+
+### MQTT server with visiualization tools 
+- [https://thingsboard.io/] (https://thingsboard.io/)
+
+### Time display
+- public NTP server  [https://developers.google.com/time/](https://developers.google.com/time/)
+
+### Dust sensor:
+- [https://media.digikey.com/pdf/Data%20Sheets/Sharp%20PDFs/GP2Y1014AU0F_Spec_2-6-15.pdf](https://media.digikey.com/pdf/Data%20Sheets/Sharp%20PDFs/GP2Y1014AU0F_Spec_2-6-15.pdf)
+
+- technical detail of GP2Y10's analog front end  
+[http://www.ti.com/lit/ug/tidub65c/tidub65c.pdf](http://www.ti.com/lit/ug/tidub65c/tidub65c.pdf)
+![dust sensor and ESP32](https://github.com/coniferconifer/AIR-BENTO/blob/master/AIRBENTOcircuit.jpg)
+
+### trouble shooting:
+- Why GPIO33 is used for ADC <br>
+  refer to "ADC2 Channel cannot be used when WiFi is in use #440"
+- [https://github.com/espressif/arduino-esp32/issues/440](https://github.com/espressif/arduino-esp32/issues/440)
+
+### remaining issues
+- ~~WiFi is always ON , not good for longer battery operation.~~
+
+### "Elevated Indoor Carbon Dioxide Impairs Decision-Making Performance"
+- [http://newscenter.lbl.gov/2012/10/17/elevated-indoor-carbon-dioxide-impairs-decision-making-performance/](http://newscenter.lbl.gov/2012/10/17/elevated-indoor-carbon-dioxide-impairs-decision-making-performance/)
