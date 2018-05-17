@@ -82,6 +82,7 @@ are packed in BENTO lunch box.
 
 - technical detail of GP2Y10's analog front end  
 [http://www.ti.com/lit/ug/tidub65c/tidub65c.pdf](http://www.ti.com/lit/ug/tidub65c/tidub65c.pdf)
+- wiring<br>
 ![dust sensor and ESP32](https://github.com/coniferconifer/AIR-BENTO/blob/master/AIRBENTOcircuit.jpg)
 
 ### trouble shooting:
