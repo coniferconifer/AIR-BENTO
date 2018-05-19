@@ -11,10 +11,14 @@
 - works as a MQTT client over WiFi or a BLE device
 are packed in BENTO lunch box.
 ### what's new
+- By using the latest Arduino core for ESP32 with BLE , the compiled flash memory reached 
+  to 104%, so that BLE is an option by default.<br>
+  Update Arduino core for ESP32 WiFi chip , then use "Partition Scheme" in "Tools" menu in Arduino IDE and select "No OTA(large APP)" , 
+  this program will fit in the space in case of #define BLE
+  
 - SHT21 humidity sensor is supported in May/14/2018 by #define HUMIDITY
 - GY-21 board with SHT21 has 5V SDA/SCL pins , use FET 3.3V-5V level converter to connect to ESP32 I2C bus.
 - wirings are changed to use BMP180 as of April/30/2018
-- By using the latest Arduino core for ESP32 with BLE , the compiled flash memory reached to 104%, so that BLE is an option by default and reduced to 45% of flash memory.
 - #define DEEPSLEEP for ESP32 deep sleep is supported in May 13,2018
 
 ![AIR BENTO](https://github.com/coniferconifer/AIR-BENTO/blob/master/AIR%20BENTO.jpg)
