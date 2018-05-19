@@ -71,7 +71,7 @@
 // Why GPIO33 is used for ADC
 // referer to "ADC2 Channel cannot be used when WiFi is in use #440"
 // https://github.com/espressif/arduino-esp32/issues/440
-#define VERSION "20180514"
+#define VERSION "20180519"
 #include <WiFi.h>
 #include <PubSubClient.h>
 
@@ -80,9 +80,11 @@
 #define BMP180
 #define HUMIDITY //SHT21
 
-//#define BLE   // by using the latest Arduino core for ESP32 with BLE ,
-//                 the compiled flash memory reached to 104%.
-//                 if BLE is not used , it is 45%.
+#define BLE   // by using the latest Arduino core for ESP32 with BLE ,
+//               the compiled flash memory reached to 104%.
+//               if #define BLE is not used , it is 45%.
+//               Use "Partition Scheme" in "Tools" menu in Arduino IDE and select "No OTA(large APP)" then this 
+//               program will fit in the space for #define BLE
 // hardware configuration
 // SDA ---GPIO21 , SCK ---GPIO22 for BMP180
 // CO2 sensor TX(19) --- GPIO 16 (RX) , RX --- GPIO 17(TX)
@@ -119,19 +121,23 @@ SSD1306Spi        display(0, 2, 21); //GPIO0(RES),GPIO2(DC/MISO),GPI21(CS), GPIO
 // credentials.h should include #define WIFI_SSID XXXXXX
 //                        #define WIFI_PASS YYYYYY
 //                       home , office
-//#define WIFI_SSID3 "testSSID"
+//#define BLETEST
+#ifdef BLETEST
+#define WIFI_SSID3 "testSSID" //non existing SSID to turn on BLE mode
+char* ssidArray[] = { WIFI_SSID3, WIFI_SSID3 , WIFI_SSID3};
+#else
 char* ssidArray[] = { WIFI_SSID , WIFI_SSID1, WIFI_SSID2};
+#endif
+
 char* passwordArray[] = {WIFI_PASS, WIFI_PASS1, WIFI_PASS2};
 char* tokenArray[] = { TOKEN , TOKEN1, TOKEN2};
 char* serverArray[] = {SERVER, SERVER1, SERVER2};
 #define MQTTRETRY 1
 #define DEVICE_TYPE "ESP32" // 
-//#define DEVICE_ID "1234" // DEVICE_TYPE-DEVICE_ID will be used as clientId
-//char clientId[] = DEVICE_TYPE "-" DEVICE_ID;
-String clientId = DEVICE_TYPE ;
+String clientId = DEVICE_TYPE ; //uniq clientID will be generated from MAC
 char topic[] = "v1/devices/me/telemetry"; //for Thingsboard
 #define MQTTPORT 1883 //for Thingsboard or MQTT server
-#define WARMUPTIME 60000 // 60sec
+#define WARMUPTIME 90000 // 60sec -> 90sec
 #define TIMEZONE 9 //in Japan
 #define NTP1 "time.google.com"
 #define NTP2 "ntp.nict.jp"
@@ -176,7 +182,7 @@ void setup() {
   Co2Sensor.begin(9600); // communication with MH-Z14A
 #ifdef HUMIDITY
   SHT21.begin();
-#endif  
+#endif
   Serial.begin(115200);
 
 
@@ -274,7 +280,7 @@ void loop() {
 #ifdef DEEPSLEEP
 #define MINCO2 430
 #else
-#define MINCO2 400
+#define MINCO2 390
 #endif
   for (i = 0; i < WAITLOOP; i++) {
     co2 = getCO2();
@@ -583,9 +589,9 @@ void displayCO2(int co2) {
     display.drawString(0, 8, "CO2: bad!" );
   } else {
     if (co2 >= 1000) {
-      display.drawString(0, 10, "CO2: ----" );
+      display.drawString(0, 10, "CO2: vent" );
     } else {
-      if (co2 > 399) {
+      if (co2 > 390) {
         display.drawString(0, 10, "CO2: good" );
       } else {
         display.drawString(0, 10, "CO2:     " );
