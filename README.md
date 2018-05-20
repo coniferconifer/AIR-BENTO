@@ -37,11 +37,12 @@ are packed in BENTO lunch box.
 
 
 
-## posts sensor values to MQTT server via WiFi
+## AIR BENTO posts sensor values to MQTT server via WiFi
 - ThingsBoard is recommended to visualize data by its dashboard.
   I'm running ThingsBoard on Raspberry pi.
 
-## broadcasts sensor values as bluetooth device name
+## AIR BENTO broadcasts sensor values as bluetooth device name
+- in case there is no WiFi AP available
 - Mobile phone users near AIR BENTO can read out sensor values without application.
 ## 
 
@@ -68,7 +69,7 @@ are packed in BENTO lunch box.
 ### BMP180 library
 - [https://github.com/adafruit/Adafruit-BMP085-Library](https://github.com/adafruit/Adafruit-BMP085-Library)
 
-### SHT21 library for GY-21
+### SHT21 library 
 - [https://github.com/e-radionicacom/SHT21-Arduino-Library](https://github.com/e-radionicacom/SHT21-Arduino-Library)
 
 
@@ -93,7 +94,8 @@ are packed in BENTO lunch box.
 - Why GPIO33 is used for ADC <br>
   refer to "ADC2 Channel cannot be used when WiFi is in use #440"<br>
   [https://github.com/espressif/arduino-esp32/issues/440](https://github.com/espressif/arduino-esp32/issues/440)
-- if you got [W] [esp32-hal-i2c.c:334] i2cRead() Ack Error! Addr:40 for SHT21(GY-21 board) add 4.7kOhm pullup resisters to 5V for SDA and SCL lines.
+- if you got [W] [esp32-hal-i2c.c:334] i2cRead() Ack Error! Addr:40 for SHT21(GY-21 board) , <br>
+  add 4.7kOhm pullup resisters to 5V for SDA and SCL lines. 
 
 ### remaining issues
 - ~~WiFi is always ON , not good for longer battery operation.~~
