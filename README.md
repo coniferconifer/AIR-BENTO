@@ -27,26 +27,22 @@ are packed in BENTO lunch box.
 ## Dust sensor SHARP GP2Y1014AU0F or maybe GP2Y1010AU0F
 - analog voltage output 0-3.7V 
 - Vo output is connected to ESP32 ADC33 port
-- LED is driven by NPN transister 2N5551 from GPIO39
+- internal LED is driven by NPN transister 2N5551 from GPIO39
 - Vo output goes up to 3.7V, so Vo is clipped by shotkey diode 1N5819 to protect GPIO33.
 
 ## GY-68 BMP180 pressure sensor (Apr/30/2018)
 - connected via I2C (GPIO21 as SDA , GPIO22 as SCL)
 - GY-68 BMP180 has 3.3V linear regulator on board and SDA,SCL are pulled up to 3.3V,
-  so, I supply 5V to VCC pin. (depending on your hardare) 
-
-
+  so, I supply 5V to VCC pin. (depending on your hardware) 
 
 ## AIR BENTO posts sensor values to MQTT server via WiFi
 - ThingsBoard is recommended to visualize data by its dashboard.
   I'm running ThingsBoard on Raspberry pi.
 
 ## AIR BENTO broadcasts sensor values as bluetooth device name
-- in case there is no WiFi AP available
-- 
-
+- in case there is no WiFi AP available,
 Mobile phone users near AIR BENTO can read out sensor values without application.
-## 
+
 
 ## License: Apache License v2
 
@@ -97,7 +93,7 @@ Mobile phone users near AIR BENTO can read out sensor values without application
   refer to "ADC2 Channel cannot be used when WiFi is in use #440"<br>
   [https://github.com/espressif/arduino-esp32/issues/440](https://github.com/espressif/arduino-esp32/issues/440)
 - if you got [W] [esp32-hal-i2c.c:334] i2cRead() Ack Error! Addr:40 for SHT21(GY-21 board) , <br>
-  add 4.7kOhm pullup resisters to 5V for SDA and SCL lines. 
+  add 4.7kOhm pullup resisters to SDA and SCL lines and pull up to 5V. 
 
 ### remaining issues
 - ~~WiFi is always ON , not good for longer battery operation.~~
