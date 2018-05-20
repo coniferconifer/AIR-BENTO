@@ -91,8 +91,8 @@ are packed in BENTO lunch box.
 
 ### trouble shooting:
 - Why GPIO33 is used for ADC <br>
-  refer to "ADC2 Channel cannot be used when WiFi is in use #440"
-- [https://github.com/espressif/arduino-esp32/issues/440](https://github.com/espressif/arduino-esp32/issues/440)
+  refer to "ADC2 Channel cannot be used when WiFi is in use #440"<br>
+  [https://github.com/espressif/arduino-esp32/issues/440](https://github.com/espressif/arduino-esp32/issues/440)
 
 ### remaining issues
 - ~~WiFi is always ON , not good for longer battery operation.~~
@@ -109,3 +109,6 @@ are packed in BENTO lunch box.
   ![write](https://github.com/coniferconifer/AIR-BENTO/blob/master/SHT21commandwrite.png)<br>
   SHT21 command read<br>
   ![read](https://github.com/coniferconifer/AIR-BENTO/blob/master/SHT21commandread.png)<br>
+
+### CO2 measureing may be a brain activity monitor<br>
+![CO2 graph]((https://github.com/coniferconifer/AIR-BENTO/blob/master/CO2graph.png)<br>
