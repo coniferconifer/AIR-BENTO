@@ -99,3 +99,13 @@ are packed in BENTO lunch box.
 
 ### "Elevated Indoor Carbon Dioxide Impairs Decision-Making Performance"
 - [http://newscenter.lbl.gov/2012/10/17/elevated-indoor-carbon-dioxide-impairs-decision-making-performance/](http://newscenter.lbl.gov/2012/10/17/elevated-indoor-carbon-dioxide-impairs-decision-making-performance/)
+
+### pulseview by sigrok project is quite useful 
+- SHT21 I2C bus observed by CY7C68013A-56 EZ-USB FX2LP USB board<br>
+  [https://sigrok.org/wiki/Lcsoft_Mini_Board](https://sigrok.org/wiki/Lcsoft_Mini_Board)
+- software logic analyzer<br>
+  [https://sigrok.org/wiki/PulseView](https://sigrok.org/wiki/PulseView)<br>
+  SHT21 command write<br>
+  ![write](https://github.com/coniferconifer/AIR-BENTO/blob/master/SHT21commandwrite.png)<br>
+  SHT21 command read<br>
+  ![read](https://github.com/coniferconifer/AIR-BENTO/blob/master/SHT21commandread.png)<br>
