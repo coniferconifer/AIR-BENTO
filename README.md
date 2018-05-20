@@ -43,7 +43,9 @@ are packed in BENTO lunch box.
 
 ## AIR BENTO broadcasts sensor values as bluetooth device name
 - in case there is no WiFi AP available
-- Mobile phone users near AIR BENTO can read out sensor values without application.
+- 
+
+Mobile phone users near AIR BENTO can read out sensor values without application.
 ## 
 
 ## License: Apache License v2
@@ -115,3 +117,6 @@ are packed in BENTO lunch box.
 
 ### CO2 measureing may be a brain activity monitor<br>
 ![CO2 graph](https://github.com/coniferconifer/AIR-BENTO/blob/master/CO2graph.png)<br>
+
+### dust sensor detects when I'm home
+![I'm home at around 13:23, humidity , dust and co2 level jumped!](https://github.com/coniferconifer/AIR-BENTO/blob/master/whenIamhome.png)<br>
