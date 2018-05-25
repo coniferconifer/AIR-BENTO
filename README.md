@@ -108,7 +108,7 @@ Mobile phone users near AIR BENTO can read out sensor values without application
   Whats wrong ?? <br> I have no oscilloscope to check the waveform of I2C bus!<br><br>
   Another try was to connect 5V to VIN of GY-21 and added 5V - 3.3V FET gate level converter between 
   GY-21 and ESP32 I2C bus, but still got the same error.<br>
-  I have added 4.7kOhm pullup resisters SDA and SCL lines from GY21 and pulled up to 5V. <br>
+  I have added 4.7kOhm pullup resisters to SDA and SCL lines from GY21 and pulled up to 5V. <br>
   This fixed the i2cRead() Ack error. The waveform I2C may be shaped by lower pullup resisters, but could not figure out exact reason.
 
 ### remaining issues
