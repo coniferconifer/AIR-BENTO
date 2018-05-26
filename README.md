@@ -109,7 +109,7 @@ Mobile phone users near AIR BENTO can read out sensor values without application
 ### "High CO2 Levels in Your Car"
 - [https://www.co2meter.com/blogs/news/23987521-high-co2-levels-in-your-car](https://www.co2meter.com/blogs/news/23987521-high-co2-levels-in-your-car)
 - AIR-BENTO in the car <br>
-![Fig.3 AIR-BENTO in the car]((https://github.com/coniferconifer/AIR-BENTO/blob/master/airbentointhecar.jpg)
+![Fig.3 AIR-BENTO in the car](https://github.com/coniferconifer/AIR-BENTO/blob/master/airbentointhecar.jpg)
   
 ### pulseview by sigrok project is quite useful 
 - SHT21 I2C bus observed by CY7C68013A-56 EZ-USB FX2LP USB board<br>
