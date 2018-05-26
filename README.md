@@ -18,7 +18,7 @@ are packed in BENTO lunch box.
   this program will fit in the space in case of #define BLE
   
 - SHT21 humidity sensor is supported in May/14/2018 by #define HUMIDITY
-- GY-21 board with SHT21 has 5V SDA/SCL pins when VIN is connected to 5V , I'm using FET 3.3V-5V level converter to connect to ESP32 I2C bus. (see trouble shooting below)
+- GY-21 board with SHT21
 - wirings are changed to use BMP180 as of April/30/2018
 - #define DEEPSLEEP for ESP32 deep sleep is supported in May 13,2018
 
@@ -99,23 +99,15 @@ Mobile phone users near AIR BENTO can read out sensor values without application
 - Why GPIO33 is used for ADC <br>
   refer to "ADC2 Channel cannot be used when WiFi is in use #440"<br>
   [https://github.com/espressif/arduino-esp32/issues/440](https://github.com/espressif/arduino-esp32/issues/440)
-- about [W] [esp32-hal-i2c.c:334] i2cRead() Ack Error! Addr:40 <br><br>
-  GY-21 has 3.3V LDO(low dropout regulator connected to VIN) on board , 3.3V from ESP32 was connected to VIN.
-  [schematics of GY-21](https://www.ebay.com/itm/New-HTU21D-GY-21-HTU-Temperature-Humidity-Sensor-Breakout-Board-Module-Hot-/271731131299)
-  <br>(pull up resisters are 10KOhm for GY-21 I got)<br>
-  External SDA and SCL pins are confirmed that they are pulled up to 3.3V (thanks to Low dropOut regulator 662K )
-  but got [W] [esp32-hal-i2c.c:334] i2cRead() Ack Error! Addr:40 for access to SHT21(GY-21 board).
-  Whats wrong ?? <br> I have no oscilloscope to check the waveform of I2C bus!<br><br>
-  Another try was to connect 5V to VIN of GY-21 and added 5V - 3.3V FET gate level converter between 
-  GY-21 and ESP32 I2C bus, but still got the same error.<br>
-  I have added 4.7kOhm pullup resisters to SDA and SCL lines from GY21 and pulled up to 5V. <br>
-  This fixed the i2cRead() Ack error. The waveform I2C may be shaped by lower pullup resisters, but could not figure out exact reason.
 
 ### remaining issues
 - ~~WiFi is always ON , not good for longer battery operation.~~
 
 ### "Elevated Indoor Carbon Dioxide Impairs Decision-Making Performance"
 - [http://newscenter.lbl.gov/2012/10/17/elevated-indoor-carbon-dioxide-impairs-decision-making-performance/](http://newscenter.lbl.gov/2012/10/17/elevated-indoor-carbon-dioxide-impairs-decision-making-performance/)
+
+### "High CO2 Levels in Your Car"
+- [https://www.co2meter.com/blogs/news/23987521-high-co2-levels-in-your-car](https://www.co2meter.com/blogs/news/23987521-high-co2-levels-in-your-car)
 
 ### pulseview by sigrok project is quite useful 
 - SHT21 I2C bus observed by CY7C68013A-56 EZ-USB FX2LP USB board<br>
