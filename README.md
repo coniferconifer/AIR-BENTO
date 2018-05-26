@@ -108,19 +108,21 @@ Mobile phone users near AIR BENTO can read out sensor values without application
 
 ### "High CO2 Levels in Your Car"
 - [https://www.co2meter.com/blogs/news/23987521-high-co2-levels-in-your-car](https://www.co2meter.com/blogs/news/23987521-high-co2-levels-in-your-car)
-
+- AIR-BENTO in the car <br>
+![Fig.3 AIR-BENTO in the car]((https://github.com/coniferconifer/AIR-BENTO/blob/master/airbentointhecar.jpg)
+  
 ### pulseview by sigrok project is quite useful 
 - SHT21 I2C bus observed by CY7C68013A-56 EZ-USB FX2LP USB board<br>
   [https://sigrok.org/wiki/Lcsoft_Mini_Board](https://sigrok.org/wiki/Lcsoft_Mini_Board)
 - software logic analyzer<br>
   [https://sigrok.org/wiki/PulseView](https://sigrok.org/wiki/PulseView)<br>
   SHT21 command write<br>
-  ![Fig.3 write](https://github.com/coniferconifer/AIR-BENTO/blob/master/SHT21commandwrite.png)<br>
+  ![Fig.4 write](https://github.com/coniferconifer/AIR-BENTO/blob/master/SHT21commandwrite.png)<br>
   SHT21 command read<br>
-  ![Fig.4 read](https://github.com/coniferconifer/AIR-BENTO/blob/master/SHT21commandread.png)<br>
+  ![Fig.5 read](https://github.com/coniferconifer/AIR-BENTO/blob/master/SHT21commandread.png)<br>
 
 ### CO2 measureing may be a brain activity monitor<br>
-![Fig.5 CO2 graph](https://github.com/coniferconifer/AIR-BENTO/blob/master/CO2graph.png)<br>
+![Fig.6 CO2 graph](https://github.com/coniferconifer/AIR-BENTO/blob/master/CO2graph.png)<br>
 
 ### dust sensor detects when I'm home
-![Fig.6 I'm home at around 13:23, humidity , dust and co2 level jumped!](https://github.com/coniferconifer/AIR-BENTO/blob/master/whenIamhome.png)<br>
+![Fig.7 I'm home at around 13:23, humidity , dust and co2 level jumped!](https://github.com/coniferconifer/AIR-BENTO/blob/master/whenIamhome.png)<br>
