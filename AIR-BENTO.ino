@@ -148,7 +148,7 @@ char topic[] = "v1/devices/me/telemetry"; //for Thingsboard
 
 //https://github.com/espressif/arduino-esp32/blob/master/libraries/ESP32/examples/Timer/WatchdogTimer/WatchdogTimer.ino#include "esp_system.h"
 
-const int wdtTimeout = 60000;  //time in ms to trigger the watchdog
+const int wdtTimeout =180000;  //time in ms to trigger the watchdog
 hw_timer_t *timer = NULL;
 
 void IRAM_ATTR resetModule() {
