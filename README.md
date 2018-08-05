@@ -80,9 +80,9 @@ Mobile phone users near AIR BENTO can read out sensor values without application
 ### SHT21 library (New!)
 - [https://github.com/e-radionicacom/SHT21-Arduino-Library](https://github.com/e-radionicacom/SHT21-Arduino-Library)
 - I got i2cCheckLineState() : invalid State sda=0 scl=1  BusInvalidState TwoWire() can't init error by recent compilation
-  then , replaced Arduino-esp32 to [https://github.com/stickbreaker/arduino-esp32]https://github.com/stickbreaker/arduino-esp32
-  and [https://github.com/markbeee/SHT21]https://github.com/markbeee/SHT21
-  Thanks to [https://github.com/espressif/arduino-esp32/issues/464] https://github.com/espressif/arduino-esp32/issues/464
+  then , replaced Arduino-esp32 to https://github.com/stickbreaker/arduino-esp32
+  and https://github.com/markbeee/SHT21
+  Thanks to  https://github.com/espressif/arduino-esp32/issues/464
 ### PubSubClient
 - [https://github.com/knolleary/pubsubclient](https://github.com/knolleary/pubsubclient)
 
