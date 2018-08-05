@@ -12,12 +12,15 @@
 are packed in BENTO lunch box.
 
 ## what's new
+- watch dog timer is introduced
 - By using the latest Arduino core for ESP32 with BLE , the compiled flash memory reached 
   to 104%, so that #define BLE  at AIR-BENTO is changed to an option by default.<br>
   Update Arduino core for ESP32 WiFi chip , then use "Partition Scheme" in "Tools" menu in Arduino IDE and select "No OTA(large APP)" , 
   this program will fit in the space in case of #define BLE
   
 - SHT21 humidity sensor is supported in May/14/2018 by #define HUMIDITY
+  (due to i2c error , I replaced Arduino core and SHT21 library to https://github.com/stickbreaker/arduino-esp32 and 
+  https://github.com/markbeee/SHT21
 - GY-21 board with SHT21
 - wirings are changed to use BMP180 as of April/30/2018
 - #define DEEPSLEEP for ESP32 deep sleep is supported in May 13,2018
@@ -74,10 +77,12 @@ Mobile phone users near AIR BENTO can read out sensor values without application
 ### BMP180 library
 - [https://github.com/adafruit/Adafruit-BMP085-Library](https://github.com/adafruit/Adafruit-BMP085-Library)
 
-### SHT21 library 
+### SHT21 library (New!)
 - [https://github.com/e-radionicacom/SHT21-Arduino-Library](https://github.com/e-radionicacom/SHT21-Arduino-Library)
-
-
+- I got i2cCheckLineState() : invalid State sda=0 scl=1  BusInvalidState TwoWire() can't init error by recent compilation
+  then , replaced Arduino-esp32 to [https://github.com/stickbreaker/arduino-esp32]https://github.com/stickbreaker/arduino-esp32
+  and [https://github.com/markbeee/SHT21]https://github.com/markbeee/SHT21
+  Thanks to [https://github.com/espressif/arduino-esp32/issues/464] https://github.com/espressif/arduino-esp32/issues/464
 ### PubSubClient
 - [https://github.com/knolleary/pubsubclient](https://github.com/knolleary/pubsubclient)
 
