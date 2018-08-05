@@ -7,6 +7,8 @@
 
    Author: coniferconifer
    License: Apache License v2
+   Aug 4,2018
+       watch dog timer for loop monitoring
    May 14,2018
       I2C SHT21 humidity sensor is supported by #define HUMIDITY
    May 13,2018
@@ -71,7 +73,7 @@
 // Why GPIO33 is used for ADC
 // referer to "ADC2 Channel cannot be used when WiFi is in use #440"
 // https://github.com/espressif/arduino-esp32/issues/440
-#define VERSION "20180519"
+#define VERSION "20180804"
 #include <WiFi.h>
 #include <PubSubClient.h>
 
@@ -80,10 +82,10 @@
 #define BMP180
 #define HUMIDITY //SHT21
 
-#define BLE   // by using the latest Arduino core for ESP32 with BLE ,
+//#define BLE   // by using the latest Arduino core for ESP32 with BLE ,
 //               the compiled flash memory reached to 104%.
 //               if #define BLE is not used , it is 45%.
-//               Use "Partition Scheme" in "Tools" menu in Arduino IDE and select "No OTA(large APP)" then this 
+//               Use "Partition Scheme" in "Tools" menu in Arduino IDE and select "No OTA(large APP)" then this
 //               program will fit in the space for #define BLE
 // hardware configuration
 // SDA ---GPIO21 , SCK ---GPIO22 for BMP180
@@ -115,7 +117,8 @@ SSD1306Spi        display(0, 2, 21); //GPIO0(RES),GPIO2(DC/MISO),GPI21(CS), GPIO
 // do not use ADC2* pins with WiFi ON
 // referer to "ADC2 Channel cannot be used when WiFi is in use #440"
 // https://github.com/espressif/arduino-esp32/issues/440
-#define WIFI_POWERSAVE // intermittent WiFi connection reduces power consumpution from 0.18A to 0.08 A on average
+//#define WIFI_POWERSAVE // intermittent WiFi connection reduces power consumpution from 0.18A to 0.08 A on average
+// as of June 3,2018 , recompiled version with WIFI_POWERSAVE does not send data to MQTT server
 //-------- Customise these values -----------
 #include "credentials.h"
 // credentials.h should include #define WIFI_SSID XXXXXX
@@ -136,12 +139,42 @@ char* serverArray[] = {SERVER, SERVER1, SERVER2};
 #define DEVICE_TYPE "ESP32" // 
 String clientId = DEVICE_TYPE ; //uniq clientID will be generated from MAC
 char topic[] = "v1/devices/me/telemetry"; //for Thingsboard
-#define MQTTPORT 1883 //for Thingsboard or MQTT server
+#define MQTTPORT 2883 //for Thingsboard or MQTT server
 #define WARMUPTIME 90000 // 60sec -> 90sec
 #define TIMEZONE 9 //in Japan
 #define NTP1 "time.google.com"
 #define NTP2 "ntp.nict.jp"
 #define NTP3 "ntp.jst.mfeed.ad.jp"
+
+//https://github.com/espressif/arduino-esp32/blob/master/libraries/ESP32/examples/Timer/WatchdogTimer/WatchdogTimer.ino#include "esp_system.h"
+
+const int wdtTimeout = 60000;  //time in ms to trigger the watchdog
+hw_timer_t *timer = NULL;
+
+void IRAM_ATTR resetModule() {
+  ets_printf("reboot\n");
+  esp_restart_noos();
+}
+
+/* https://github.com/espressif/arduino-esp32/blob/master/libraries/ESP32/examples/DeepSleep/ExternalWakeUp/ExternalWakeUp.ino
+  Method to print the reason by which ESP32
+  has been awaken from sleep
+*/
+void print_wakeup_reason() {
+  esp_sleep_wakeup_cause_t wakeup_reason;
+  wakeup_reason = esp_sleep_get_wakeup_cause();
+
+  switch (wakeup_reason)
+  {
+    case 1  : Serial.println("Wakeup caused by external signal using RTC_IO"); break;
+    case 2  : Serial.println("Wakeup caused by external signal using RTC_CNTL"); break;
+    case 3  : Serial.println("Wakeup caused by timer"); break;
+    case 4  : Serial.println("Wakeup caused by touchpad"); break;
+    case 5  : Serial.println("Wakeup caused by ULP program"); break;
+    default : Serial.println("Wakeup was not caused by deep sleep"); break;
+  }
+}
+
 
 #define CELSIUS
 #ifdef BLE
@@ -153,7 +186,7 @@ SimpleBLE ble;
 
 float mhtempC = 0.0; //temperature in C reported from MH-Z14A
 float mhtempF = 0.0; //temperature in F reported from MH-Z14A
-#include "esp_deep_sleep.h"
+////#include "esp_deep_sleep.h"
 
 
 WiFiClient wifiClient;
@@ -180,11 +213,9 @@ void setup() {
   pinMode(GP2YLED, OUTPUT); // do not use board LED for NodeMCU ESP32 board
   digitalWrite(GP2YLED, LOW);
   Co2Sensor.begin(9600); // communication with MH-Z14A
-#ifdef HUMIDITY
-  SHT21.begin();
-#endif
-  Serial.begin(115200);
 
+  Serial.begin(115200);
+  print_wakeup_reason();
 
 #ifdef VERBOSE
   Serial.println();
@@ -240,13 +271,14 @@ void setup() {
   }
 #endif
 
-
-#ifdef DEEPSLEEP
-  esp_deep_sleep_pd_config(ESP_PD_DOMAIN_RTC_PERIPH, ESP_PD_OPTION_OFF);
-  esp_deep_sleep_pd_config(ESP_PD_DOMAIN_RTC_SLOW_MEM, ESP_PD_OPTION_OFF);
-  esp_deep_sleep_pd_config(ESP_PD_DOMAIN_RTC_FAST_MEM, ESP_PD_OPTION_OFF);
-  esp_deep_sleep_pd_config(ESP_PD_DOMAIN_MAX, ESP_PD_OPTION_OFF);
-#endif
+  /*
+    #ifdef DEEPSLEEP
+    esp_deep_sleep_pd_config(ESP_PD_DOMAIN_RTC_PERIPH, ESP_PD_OPTION_OFF);
+    esp_deep_sleep_pd_config(ESP_PD_DOMAIN_RTC_SLOW_MEM, ESP_PD_OPTION_OFF);
+    esp_deep_sleep_pd_config(ESP_PD_DOMAIN_RTC_FAST_MEM, ESP_PD_OPTION_OFF);
+    esp_deep_sleep_pd_config(ESP_PD_DOMAIN_MAX, ESP_PD_OPTION_OFF);
+    #endif
+  */
   disableABCcommand(); //I'm not sure this works for MH-Z14A
   initDust();
 
@@ -260,14 +292,17 @@ void setup() {
     Serial.println("BMP180 init fail\n\n");
   }
 #endif
-
+  timer = timerBegin(0, 80, true);                  //timer 0, div 80
+  timerAttachInterrupt(timer, &resetModule, true);  //attach callback
+  timerAlarmWrite(timer, wdtTimeout * 1000, false); //set time in us
+  timerAlarmEnable(timer);                          //enable interrupt
 }
 boolean mqttflag = false;
 
 void loop() {
 
 #define DISPLAYINTERVAL 2000
-
+  timerWrite(timer, 0); //reset timer (feed watchdog)
   long int co2; long int d; float P; float T; float H;
   d = 0; co2 = 0; P = 0.0; T = 0.0;
   long int co2_ave = 0; long int d_ave = 0; float P_ave = 0.0; float T_ave = 0.0; float H_ave = 0.0;
@@ -345,7 +380,7 @@ void loop() {
   if ( AP == -1 ) {
 #ifdef WIFI_POWERSAVE
     Serial.println("WiFi turn off");
-    WiFi.mode(WIFI_OFF);// WiFi.disconnect(true);
+    WiFi.mode(WIFI_OFF);
 #endif
 #ifdef OLED
 #ifdef BLE
@@ -373,13 +408,16 @@ void loop() {
 void publishToMQTT(int co2, float P, float T, float H, float d) {
   // WiFi mode
   String payload = "{";
-  payload += "\"temperature\":"; payload += T ; payload += ",";
-  payload += "\"humidity\":"; payload += H ; payload += ",";
+  payload += "\"temperature\":"; payload += String( T , 1); payload += ",";
+#ifdef HUMIDITY
+  payload += "\"humidity\":"; payload += String(H, 1) ; payload += ",";
+#endif
   payload += "\"co2\":"; payload += co2; payload += ",";
 #ifdef BMP180
-  payload += "\"press\":"; payload += P; payload += ",";
+  payload += "\"press\":"; payload += String(P, 2); payload += ",";
 #endif
-  payload += "\"dust\":"; payload += d;
+  payload += "\"dust\":"; payload += String(d, 0); payload += ",";
+  payload += "\"rssi\":"; payload += WiFi.RSSI();
   //payload += ",";
   //  payload += "\"date\":"; payload += s;
   payload += "}";
@@ -452,8 +490,10 @@ void publishToMQTT(int co2, float P, float T, float H, float d) {
 
 #ifdef DEEPSLEEP
   Serial.print("Deep Sleep: "); Serial.println(SLEEPSEC);
-  esp_deep_sleep_enable_timer_wakeup(SLEEPSEC * 1000 * 1000); // wakeup(restart) after WAITLOOP msecs
-  esp_deep_sleep_start();
+#define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
+  esp_sleep_enable_timer_wakeup((uint64_t)SLEEPSEC * (uint64_t)uS_TO_S_FACTOR);
+  // esp_deep_sleep_enable_timer_wakeup(SLEEPSEC * 1000 * 1000); // wakeup(restart) after WAITLOOP msecs
+  //  esp_deep_sleep_start();
 #else
   //  int i;
   //  for (i = 0; i < WAITLOOP; i++) {
@@ -655,7 +695,7 @@ void displayHumidity(float H) {
   display.drawString(0, 8, "Humid.:" );
   display.setTextAlignment(TEXT_ALIGN_RIGHT);
 
-  display.drawString(127, 36,  (String)H + "%");
+  display.drawString(127, 36,  (String)H + "%RH");
   display.display();
   Serial.println(H);
 }
@@ -786,7 +826,7 @@ float getTemperature()
   //  temp = temperatureRead() - 26.0; //get ESP32 core temperature in Celsius and convert it to ambient temperature
   //modify offset to adopt for your ambient temperature
 #ifdef BMP180
-  temp = pressure.readTemperature() - 3.0 ; //need calibration for your BMP180
+  temp = pressure.readTemperature() ; //need calibration for your BMP180
 #else
   temp = mhtempC; // MH-Z14A temperature
 #endif
