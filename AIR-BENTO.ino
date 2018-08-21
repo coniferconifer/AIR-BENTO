@@ -7,6 +7,8 @@
 
    Author: coniferconifer
    License: Apache License v2
+   Aug 21,2018
+       disabeABCcommand() is commented out and enableABCcommand() is ON.
    Aug 4,2018
        watch dog timer for loop monitoring
    May 14,2018
@@ -73,7 +75,7 @@
 // Why GPIO33 is used for ADC
 // referer to "ADC2 Channel cannot be used when WiFi is in use #440"
 // https://github.com/espressif/arduino-esp32/issues/440
-#define VERSION "20180804"
+#define VERSION "20180821"
 #include <WiFi.h>
 #include <PubSubClient.h>
 
@@ -148,7 +150,7 @@ char topic[] = "v1/devices/me/telemetry"; //for Thingsboard
 
 //https://github.com/espressif/arduino-esp32/blob/master/libraries/ESP32/examples/Timer/WatchdogTimer/WatchdogTimer.ino#include "esp_system.h"
 
-const int wdtTimeout =180000;  //time in ms to trigger the watchdog
+const int wdtTimeout = 180000; //time in ms to trigger the watchdog
 hw_timer_t *timer = NULL;
 
 void IRAM_ATTR resetModule() {
@@ -279,7 +281,10 @@ void setup() {
     esp_deep_sleep_pd_config(ESP_PD_DOMAIN_MAX, ESP_PD_OPTION_OFF);
     #endif
   */
-  disableABCcommand(); //I'm not sure this works for MH-Z14A
+  //  disableABCcommand(); //I'm not sure this works for MH-Z14A
+  //  resetCO2(); // if co2 sensor should be calibrated, then leave AIR BENTO outdoor for at least 30min
+                  // and run resetCO2(); once
+  enableABCcommand();
   initDust();
 
 #ifdef BMP180
@@ -826,7 +831,7 @@ float getTemperature()
   //  temp = temperatureRead() - 26.0; //get ESP32 core temperature in Celsius and convert it to ambient temperature
   //modify offset to adopt for your ambient temperature
 #ifdef BMP180
-  temp = pressure.readTemperature() ; //need calibration for your BMP180
+  temp = pressure.readTemperature() - 3.0 ; //need calibration for your BMP180
 #else
   temp = mhtempC; // MH-Z14A temperature
 #endif
@@ -882,6 +887,10 @@ void enableABCcommand() {
   initCO2();
   Co2Sensor.write(enableABC, sizeof(enableABC));
 }
+void resetCO2() {
+  Co2Sensor.write(reset, sizeof(reset));
+}
+
 int getCO2() {
   int returnnum = 0;
   uint16_t co2 = 0;
