@@ -7,6 +7,10 @@
 
    Author: coniferconifer
    License: Apache License v2
+   Sep 16,2018 
+       GPIO39 for GP2Y1014AU0F ]]]]]]]]]]]]]]]]was dead wrong. changed to GPIO12
+       GPIO34-39 can not be used for OUTPUT
+       GPIO36 for CS is changed to GPIO14
    Aug 21,2018
        disabeABCcommand() is commented out and enableABCcommand() is ON.
    Aug 4,2018
@@ -72,10 +76,10 @@
 // https://github.com/adafruit/Adafruit-BMP085-Library
 //
 // trouble shooting:
-// Why GPIO33 is used for ADC
+// Why GPIO_NUM_33 is used for ADC
 // referer to "ADC2 Channel cannot be used when WiFi is in use #440"
 // https://github.com/espressif/arduino-esp32/issues/440
-#define VERSION "20180821"
+#define VERSION "20180916"
 #include <WiFi.h>
 #include <PubSubClient.h>
 
@@ -92,8 +96,8 @@
 // hardware configuration
 // SDA ---GPIO21 , SCK ---GPIO22 for BMP180
 // CO2 sensor TX(19) --- GPIO 16 (RX) , RX --- GPIO 17(TX)
-// SSD1603 RES --- GPIO0,DC/MISO --- GPIO2, CS --- GPIO36, D1/MOSI --- GPIO23, D0(SCK) --- GPIO18
-//
+// SSD1603 RES --- GPIO0,DC/MISO --- GPIO2, CS --- GPIO14, D1/MOSI --- GPIO23, D0(SCK) --- GPIO18
+// GY2P LED ---GPIO12, Vo ----GPIO33
 //
 HardwareSerial Co2Sensor(2);
 //HardwareSerial Serial1(1); //RX as GPIO 9 TX as GPIO 10
@@ -108,14 +112,15 @@ SHT21 SHT21;
 
 #ifdef OLED
 #ifdef BMP180
-SSD1306Spi        display(0, 2, 36); //GPIO0(RES),GPIO2(DC/MISO),GPIO36(CS), GPIO23(D1(MOSI)),GPIO18(D0(SCK))
-#define GP2YLED 39 //GPIO22 is used to drive LED pin of GP2Y by NPN transister 2N5551
+//SSD1306Spi        display(0, 2, 36); //GPIO0(RES),GPIO2(DC/MISO),GPIO36(CS), GPIO23(D1(MOSI)),GPIO18(D0(SCK))
+SSD1306Spi        display(0, 2, 14); //GPIO0(RES),GPIO2(DC/MISO),GPIO14(CS), GPIO23(D1(MOSI)),GPIO18(D0(SCK))
 #else
 SSD1306Spi        display(0, 2, 21); //GPIO0(RES),GPIO2(DC/MISO),GPI21(CS), GPIO23(D1(MOSI)),GPIO18(D0(SCK))
 #endif
 #endif
-#define GP2YLED 22 //GPIO22 is used to drive LED pin of GP2Y by NPN transister 2N5551
-#define GPIO33 33 // Analog digital converter works when WiFi is in use
+
+#define GP2YLED 12 //GPIO12 is used to drive LED pin of GP2Y by NPN transister 2N5551
+//#define GPIO33 33 // Analog digital converter works when WiFi is in use
 // do not use ADC2* pins with WiFi ON
 // referer to "ADC2 Channel cannot be used when WiFi is in use #440"
 // https://github.com/espressif/arduino-esp32/issues/440
@@ -141,7 +146,7 @@ char* serverArray[] = {SERVER, SERVER1, SERVER2};
 #define DEVICE_TYPE "ESP32" // 
 String clientId = DEVICE_TYPE ; //uniq clientID will be generated from MAC
 char topic[] = "v1/devices/me/telemetry"; //for Thingsboard
-#define MQTTPORT 2883 //for Thingsboard or MQTT server
+#define MQTTPORT 1883 //for Thingsboard or MQTT server
 #define WARMUPTIME 90000 // 60sec -> 90sec
 #define TIMEZONE 9 //in Japan
 #define NTP1 "time.google.com"
@@ -982,13 +987,13 @@ int getDustSub() { // ug/m3
 #ifdef NPNTRANSITER
   digitalWrite(GP2YLED, HIGH);
   delayMicroseconds(280);
-  int v = analogRead(GPIO33);
+  int v = analogRead(GPIO_NUM_33);
   delayMicroseconds(40);
   digitalWrite(GP2YLED, LOW);
 #else
   digitalWrite(GP2YLED, LOW);
   delayMicroseconds(280);
-  int v = analogRead(GPIO33);
+  int v = analogRead(GPIO_NUM_33);
   delayMicroseconds(40);
   digitalWrite(GP2YLED, HIGH);
 #endif
