@@ -13,7 +13,8 @@ are packed in BENTO lunch box.
 
 ## what's new
 - GPIO39->GPIO12 for GP2Y LED control. (GPIO39 does not work for pulse output. )
-- GPIO34->GPIO14 for SPI/SD1603. (ESP32 GPIO34-39 can not be used for OUTPUT)
+- GPIO34->GPIO14 for SPI/SD1306. (ESP32 GPIO34-39 can not be used for OUTPUT)
+
 - watch dog timer is introduced
 - By using the latest Arduino core for ESP32 with BLE , the compiled flash memory reached 
   to 104%, so that #define BLE  at AIR-BENTO is changed to an option by default.<br>
