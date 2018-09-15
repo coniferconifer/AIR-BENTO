@@ -12,8 +12,8 @@
 are packed in BENTO lunch box.
 
 ## what's new
-- GPIO39->GPIO12 for GP2Y LED control. (GPIO39 does not work for pulse output. )
-- GPIO34->GPIO14 for SPI/SD1306. (ESP32 GPIO34-39 can not be used for OUTPUT)
+- GPIO39->GPIO12 for GP2Y LED control. (GPIO39 does not work for pulse output. ) Sep 16,2018
+- GPIO34->GPIO14 for SPI/SD1306. (ESP32 GPIO34-39 can not be used for OUTPUT) Sep 16,2018
 
 - watch dog timer is introduced
 - By using the latest Arduino core for ESP32 with BLE , the compiled flash memory reached 
@@ -36,7 +36,7 @@ are packed in BENTO lunch box.
 ## Dust sensor SHARP GP2Y1014AU0F or maybe GP2Y1010AU0F
 - analog voltage output 0-3.7V 
 - Vo output is connected to ESP32 ADC33 port
-- internal LED is driven by NPN transister 2N5551 from GPIO39 (Fig.2)
+- internal LED is driven by NPN transister 2N5551 from ~~GPIO39~~ GPIO_NUM_12 (Fig.2)
 - max Vo output goes up to 3.7V and exceeds ESP32 max GPIO input voltage spec 3.6V , so Vo is clipped by shotkey diode 1N5819 to protect GPIO33.
   (Fig.2) , but this may be harmful to the last stage amplifier of GP2Y1016AU0F.
   <br>Voltage divider by resisters or another operational amplifier that has 0.8x gain may be better solution for product level quality.
