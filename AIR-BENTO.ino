@@ -8,9 +8,9 @@
    Author: coniferconifer
    License: Apache License v2
    Sep 16,2018 
-       GPIO39 for GP2Y1014AU0F ]]]]]]]]]]]]]]]]was dead wrong. changed to GPIO12
-       GPIO34-39 can not be used for OUTPUT
-       GPIO36 for CS is changed to GPIO14
+       GPIO39 for GP2Y1014AU0F was dead wrong. changed to GPIO12.
+       GPIO34-39 can not be used for OUTPUT.
+       GPIO36 for SPI CS is changed to GPIO14.
    Aug 21,2018
        disabeABCcommand() is commented out and enableABCcommand() is ON.
    Aug 4,2018
